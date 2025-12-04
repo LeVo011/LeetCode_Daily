@@ -1,0 +1,26 @@
+from typing import List
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        rows, cols = len(matrix), len(matrix[0])
+        first_col_zero = False
+        # 1. MARKING Phase
+        for r in range(rows):
+            if matrix[r][0] == 0:
+                first_col_zero = True
+            for c in range(1, cols):
+                if matrix[r][c] == 0:
+                    matrix[0][c] = 0  # Mark the top of this column
+                    matrix[r][0] = 0  # Mark the start of this row
+        # 2. INNER MATRIX UPDATE
+        for r in range(1, rows):
+            for c in range(1, cols):
+                if matrix[0][c] == 0 or matrix[r][0] == 0:
+                    matrix[r][c] = 0
+        # 3. HANDLE FIRST ROW
+        if matrix[0][0] == 0:
+            for c in range(cols):
+                matrix[0][c] = 0
+        # 4. HANDLE FIRST COLUMN
+        if first_col_zero:
+            for r in range(rows):
+                matrix[r][0] = 0
