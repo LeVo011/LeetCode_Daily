@@ -1,0 +1,27 @@
+#week 2 day 3
+
+from typing import List, Optional
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def nextLargerNodes(self, head: Optional[ListNode]) -> List[int]:
+        values = []
+        current = head
+        while current:
+            values.append(current.val)
+            current = current.next
+        n = len(values)
+        answer = [0] * n
+        
+        stack = []
+        
+        for i, current_val in enumerate(values):
+            while stack and values[stack[-1]] < current_val:
+                index_to_update = stack.pop()
+                answer[index_to_update] = current_val
+            stack.append(i)
+            
+        return answer
