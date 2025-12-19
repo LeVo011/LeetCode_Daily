@@ -1,0 +1,20 @@
+#week3 day 5
+
+from typing import List
+from collections import deque
+
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        q = deque() 
+        result = []
+        
+        for i, current_val in enumerate(nums):
+            while q and nums[q[-1]] <= current_val:
+                q.pop()
+            q.append(i)
+            if q[0] == i - k:
+                q.popleft()
+            if i >= k - 1:
+                result.append(nums[q[0]])
+                
+        return result
