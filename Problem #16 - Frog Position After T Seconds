@@ -1,0 +1,43 @@
+#week 4 day 2
+from typing import List
+from collections import deque, defaultdict
+
+class Solution:
+    def frogPosition(self, n: int, edges: List[List[int]], t: int, target: int) -> float:
+        if n == 1:
+            return 1.0
+        graph = defaultdict(list)
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        queue = deque([(1, 1.0)])
+        visited = [False] * (n + 1)
+        visited[1] = True
+        
+        time = 0
+        
+        while queue and time <= t:
+            level_size = len(queue)
+            
+            for _ in range(level_size):
+                u, prob = queue.popleft()
+                children = []
+                for v in graph[u]:
+                    if not visited[v]:
+                        children.append(v)
+                
+                count = len(children)
+                if u == target:
+                    if time == t:
+                        return prob
+                    elif time < t and count == 0:
+                        return prob
+                    else:
+                        return 0.0
+                
+                for v in children:
+                    visited[v] = True
+                    queue.append((v, prob / count))
+            
+            time += 1
+        return 0.0
